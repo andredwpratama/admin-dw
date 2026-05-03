@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AdMind AI - Chat Analyst</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#055223",
+                        "primary-container": "#a8f0b0",
+                        "on-secondary-fixed": "#17065e",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#276b38",
+                        "secondary-container": "#afa7fd",
+                        "surface": "#f5fbf5",
+                        "on-primary-container": "#2b6f3c",
+                        "on-secondary-fixed-variant": "#433c8a",
+                        "on-secondary-container": "#403887",
+                        "surface-tint": "#276b38",
+                        "on-background": "#171d19",
+                        "primary-fixed-dim": "#90d799",
+                        "inverse-on-surface": "#ecf2ec",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container-highest": "#dee4de",
+                        "tertiary": "#5f5e5e",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#eff5ef",
+                        "background": "#f5fbf5",
+                        "inverse-primary": "#90d799",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2c322e",
+                        "secondary": "#5b54a4",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed-dim": "#c6bfff",
+                        "outline-variant": "#c0c9bd",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#e4dfff",
+                        "surface-container-high": "#e4eae4",
+                        "on-tertiary-container": "#636262",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f5fbf5",
+                        "primary-fixed": "#abf3b3",
+                        "on-surface-variant": "#404940",
+                        "on-primary-fixed": "#002109",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#e1dede",
+                        "surface-dim": "#d5dcd6",
+                        "surface-variant": "#dee4de",
+                        "surface-container": "#e9efe9",
+                        "outline": "#707a6f",
+                        "on-surface": "#171d19"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "container-padding": "40px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "xl": "48px",
+                        "sm": "12px",
+                        "lg": "32px"
+                    },
+                    "fontFamily": {
+                        "data-display": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-display": ["32px", { "lineHeight": "1", "letterSpacing": "-0.03em", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-xl": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<nav aria-label="Sidebar Navigation" class="bg-zinc-50 dark:bg-zinc-950 h-screen w-72 flex flex-col border-r border-zinc-200 dark:border-zinc-800 hidden md:flex">
+<div class="flex flex-col h-full py-8 px-6 space-y-6">
+<!-- Brand / Header -->
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center shrink-0">
+<img alt="Abstract swirling geometric shape with vibrant green and purple gradients representing AI intelligence" class="w-full h-full object-cover rounded-xl" data-alt="Abstract swirling geometric shape with vibrant green and purple gradients representing AI intelligence" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDumMNvSvSijm5kLo32ismCOpjN1TP69HWYlTzr0PQjMIrwXbEW9_50N0v3yIsiwVuX1rW7p5PHuzWJ1UIiKIl6MdHwrDsxZCy0efTfHBlcu6BOp7r_5dFMvdFfEeN5-DaL830fJ2_332Em8_u8FSEVyne2H1K5yhPjOBSit2AOCvLZOCthtZY3EJ-kz3g2NQvu1Du41cfcJawBbkJyM-shcr4bu7khSRYEiKeqiY4zImlRcD7ae4mr_qwVsrfLAFEaSopib3-pcm0"/>
+</div>
+<div>
+<h1 class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-purple-400">AdMind AI</h1>
+<p class="font-label-sm text-label-sm text-tertiary">Marketing Intelligence</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col space-y-2 flex-grow">
+<!-- Dashboard (Inactive) -->
+<a class="flex items-center gap-sm px-4 py-3 rounded-xl font-inter text-[13px] font-semibold text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+<!-- AI Insights (Inactive) -->
+<a class="flex items-center gap-sm px-4 py-3 rounded-xl font-inter text-[13px] font-semibold text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+                    AI Insights
+                </a>
+<!-- Chat Analyst (Active) -->
+<a class="flex items-center gap-sm px-4 py-3 rounded-xl font-inter text-[13px] font-semibold text-emerald-700 dark:text-emerald-300 border-r-4 border-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/10 hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="forum" style="font-variation-settings: 'FILL' 1;">forum</span>
+                    Chat Analyst
+                </a>
+<!-- Data Upload (Inactive) -->
+<a class="flex items-center gap-sm px-4 py-3 rounded-xl font-inter text-[13px] font-semibold text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="upload">upload</span>
+                    Data Upload
+                </a>
+</div>
+<!-- CTA -->
+<div class="mt-auto mb-6">
+<button class="w-full bg-primary-container text-on-primary-container font-inter text-[13px] font-semibold py-3 px-4 rounded-full shadow-[0_20px_50px_rgba(168,240,176,0.08)] hover:bg-primary-fixed transition-colors">
+                    Upgrade Pro
+                </button>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-col space-y-2 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+<a class="flex items-center gap-sm px-4 py-2 rounded-xl font-inter text-[13px] font-semibold text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                    Help Center
+                </a>
+<a class="flex items-center gap-sm px-4 py-2 rounded-xl font-inter text-[13px] font-semibold text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                    Sign Out
+                </a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-screen relative bg-surface-bright">
+<!-- TopNavBar (Adapted for Canvas integration, stripped of bottom border per semantic shell mandate) -->
+<header class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md docked full-width top-0 z-10 flex justify-between items-center w-full px-10 py-4 h-20 shadow-[0_20px_50px_rgba(168,240,176,0.08)]">
+<div class="flex items-center w-full max-w-xl bg-surface-container-low rounded-full px-4 py-2">
+<span class="material-symbols-outlined text-zinc-400 mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-sm font-medium tracking-tight text-on-surface placeholder-zinc-400" placeholder="Search insights, campaigns, or metrics..." type="text"/>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden ml-2 border border-outline-variant">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Portrait of a professional young woman smiling gently in a well-lit modern office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByIJZknlF-gtVB5laxDmOCOj415yEkJqYhEvWT9dapojgIKnPtvuXEh810lw09yrcaY40p8lBZBsqGnqM2xxzY5lM-rpDugAhVHsZZNWlLY5Vcu-ptnO5a7L7DTcFH6v5qtJmEJm2sTUcVXNtgc3v3Yz-Nyi2lqnR3JCEo7OUQ1oMRctoVsDEnxF7DMHnVbMDE9y0qCT7c5CZkrDWJoYhCvoJZZWstJvabh-_HBHxPS0OH7nZhJOWmd2BBooUndhySGqVrNp27g3o"/>
+</div>
+</div>
+</header>
+<!-- Chat Canvas -->
+<main class="flex-1 overflow-y-auto px-container-padding py-xl flex flex-col items-center">
+<!-- Welcome / Empty State (Max Width Container) -->
+<div class="w-full max-w-4xl flex flex-col h-full">
+<div class="text-center mb-xl">
+<div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary-container to-secondary-container mx-auto mb-sm flex items-center justify-center shadow-[0_20px_50px_rgba(168,240,176,0.2)]">
+<span class="material-symbols-outlined text-data-display text-on-surface" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-xs">Chat Analyst</h2>
+<p class="font-body-md text-body-md text-tertiary">Your intelligent partner for marketing data and campaign insights.</p>
+</div>
+<!-- 'Ask me anything' Suggestions (Bento-style Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-xl">
+<button class="text-left bg-surface-container-lowest p-md rounded-xl shadow-[0_20px_50px_rgba(168,240,176,0.04)] hover:shadow-[0_20px_50px_rgba(168,240,176,0.08)] transition-all group flex flex-col gap-sm border border-transparent hover:border-primary-fixed-dim">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+</div>
+<span class="font-headline-lg text-[16px] font-semibold text-on-surface">Analyze Q3 Campaign ROI</span>
+<span class="font-label-sm text-label-sm text-tertiary">Compare spend vs. acquisition cost across all channels.</span>
+</button>
+<button class="text-left bg-secondary-fixed p-md rounded-xl shadow-[0_20px_50px_rgba(175,167,253,0.08)] hover:shadow-[0_20px_50px_rgba(175,167,253,0.15)] transition-all group flex flex-col gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-secondary-fixed group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="group">group</span>
+</div>
+<span class="font-headline-lg text-[16px] font-semibold text-on-secondary-fixed">Audience Segmentation</span>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant">Identify the top performing demographics for the recent launch.</span>
+</button>
+<button class="text-left bg-surface-container-lowest p-md rounded-xl shadow-[0_20px_50px_rgba(168,240,176,0.04)] hover:shadow-[0_20px_50px_rgba(168,240,176,0.08)] transition-all group flex flex-col gap-sm border border-transparent hover:border-primary-fixed-dim">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="insert_chart">insert_chart</span>
+</div>
+<span class="font-headline-lg text-[16px] font-semibold text-on-surface">Generate Weekly Report</span>
+<span class="font-label-sm text-label-sm text-tertiary">Draft a summary of key metrics and actionable next steps.</span>
+</button>
+<button class="text-left bg-surface-container-lowest p-md rounded-xl shadow-[0_20px_50px_rgba(168,240,176,0.04)] hover:shadow-[0_20px_50px_rgba(168,240,176,0.08)] transition-all group flex flex-col gap-sm border border-transparent hover:border-primary-fixed-dim">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+</div>
+<span class="font-headline-lg text-[16px] font-semibold text-on-surface">Detect Anomalies</span>
+<span class="font-label-sm text-label-sm text-tertiary">Scan recent ad spend data for unusual patterns or overspending.</span>
+</button>
+</div>
+<!-- Spacer to push input to bottom if content is short -->
+<div class="flex-grow"></div>
+</div>
+</main>
+<!-- Fixed Data Query Input -->
+<div class="w-full px-container-padding pb-lg pt-4 bg-gradient-to-t from-surface-bright via-surface-bright to-transparent absolute bottom-0 left-0 flex justify-center">
+<div class="w-full max-w-4xl relative">
+<!-- Floating action context -->
+<div class="absolute -top-10 left-4 bg-surface-container-highest rounded-full px-3 py-1 flex items-center gap-2 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Connected to: All Marketing Data Sources</span>
+</div>
+<div class="bg-surface-container-lowest rounded-full flex items-center p-sm pr-xs shadow-[0_20px_50px_rgba(168,240,176,0.1)] border border-surface-container-high focus-within:border-primary-container transition-colors">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-tertiary hover:bg-surface-container transition-colors shrink-0">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<input class="bg-transparent border-none focus:ring-0 flex-grow font-body-md text-body-md text-on-surface placeholder-tertiary px-sm" placeholder="Ask a question about your data..." type="text"/>
+<button class="bg-primary-container text-on-primary-container w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:scale-[1.02] transition-transform shrink-0 ml-2">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<div class="text-center mt-3">
+<span class="font-label-sm text-label-sm text-tertiary">AdMind AI can make mistakes. Verify critical data.</span>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,4 @@
+Campaign,Campaign ID,Day,Campaign state,Cost,Impressions,Clicks,Conversions,Conv. value
+Search - Product X,123-456-7890,2024-05-01,Enabled,750000,15000,1200,85,2500000
+Display - Remarketing,123-456-7891,2024-05-01,Paused,150000,85000,450,12,350000
+Video - Brand Story,123-456-7892,2024-05-01,Enabled,500000,120000,1500,0,0

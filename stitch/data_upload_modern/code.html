@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AdMind AI - Data Upload</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#055223",
+                      "primary-container": "#a8f0b0",
+                      "on-secondary-fixed": "#17065e",
+                      "surface-container-lowest": "#ffffff",
+                      "primary": "#276b38",
+                      "secondary-container": "#afa7fd",
+                      "surface": "#f5fbf5",
+                      "on-primary-container": "#2b6f3c",
+                      "on-secondary-fixed-variant": "#433c8a",
+                      "on-secondary-container": "#403887",
+                      "surface-tint": "#276b38",
+                      "on-background": "#171d19",
+                      "primary-fixed-dim": "#90d799",
+                      "inverse-on-surface": "#ecf2ec",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "surface-container-highest": "#dee4de",
+                      "tertiary": "#5f5e5e",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#eff5ef",
+                      "background": "#f5fbf5",
+                      "inverse-primary": "#90d799",
+                      "on-tertiary": "#ffffff",
+                      "inverse-surface": "#2c322e",
+                      "secondary": "#5b54a4",
+                      "tertiary-fixed": "#e5e2e1",
+                      "secondary-fixed-dim": "#c6bfff",
+                      "outline-variant": "#c0c9bd",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#e4dfff",
+                      "surface-container-high": "#e4eae4",
+                      "on-tertiary-container": "#636262",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f5fbf5",
+                      "primary-fixed": "#abf3b3",
+                      "on-surface-variant": "#404940",
+                      "on-primary-fixed": "#002109",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-primary": "#ffffff",
+                      "tertiary-container": "#e1dede",
+                      "surface-dim": "#d5dcd6",
+                      "surface-variant": "#dee4de",
+                      "surface-container": "#e9efe9",
+                      "outline": "#707a6f",
+                      "on-surface": "#171d19"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "8px",
+                      "container-padding": "40px",
+                      "md": "24px",
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "xl": "48px",
+                      "sm": "12px",
+                      "lg": "32px"
+              },
+              "fontFamily": {
+                      "data-display": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-xl": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "data-display": [
+                              "32px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "-0.03em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-xl": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="text-on-background flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden md:flex h-screen w-72 flex-col border-r border-surface-container bg-surface-bright subtle tonal shift from page background py-8 px-6 space-y-6">
+<div class="flex items-center space-x-3 px-2 mb-4">
+<div class="h-10 w-10 rounded-xl bg-primary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary font-extrabold">AdMind AI</h1>
+<p class="font-label-sm text-label-sm text-outline">Marketing Intelligence</p>
+</div>
+</div>
+<div class="flex-1 space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-2xl text-outline hover:bg-surface-container-low transition-all duration-200 hover:translate-x-1 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-2xl text-outline hover:bg-surface-container-low transition-all duration-200 hover:translate-x-1 ease-in-out" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-body-md text-body-md font-medium">AI Insights</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-2xl text-outline hover:bg-surface-container-low transition-all duration-200 hover:translate-x-1 ease-in-out" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-body-md text-body-md font-medium">Chat Analyst</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-2xl text-primary border-r-4 border-primary bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">upload</span>
+<span class="font-body-md text-body-md font-semibold">Data Upload</span>
+</a>
+</div>
+<div class="mt-auto space-y-4">
+<button class="w-full py-3 px-4 bg-primary-container text-on-primary-container rounded-full font-body-md text-body-md font-semibold hover:bg-primary-fixed transition-colors shadow-sm">
+                Upgrade Pro
+            </button>
+<div class="space-y-1">
+<a class="flex items-center space-x-3 px-4 py-2 rounded-2xl text-outline hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Help Center</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-2 rounded-2xl text-outline hover:bg-surface-container-low transition-all duration-200" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-sm text-label-sm">Sign Out</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center w-full px-6 py-4 bg-surface-bright/80 backdrop-blur-md border-b border-surface-container z-10">
+<div class="flex items-center space-x-2">
+<div class="h-8 w-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary font-extrabold text-xl">AdMind AI</h1>
+</div>
+<div class="flex items-center space-x-4 text-primary">
+<button class="hover:bg-surface-container p-2 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="User profile avatar" class="h-8 w-8 rounded-full border-2 border-primary-container" data-alt="Close up portrait of a smiling young man in a light blue shirt against a blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv43_aVQraEqi4lfLuSciPu_F-gKb6RF9AxuPlz6qKPx469Z7YoFNtW9UtbrpKEfXfepESbHqaDvRVlfLwW-yuJyIJhS8vZuT2yLwhI1TLqqbFl8NzMxj4oaSOkD4b6ug3q-hdYheTWhH3HOwuXWKQi2g9yt9UGQ5evrqTDcV5W3c9hXnnXI0Gk--s3fPlwtmYsHrkpRtBoISc1b3zLkGQgEIffLXkKF0KZkZ4W-ubgrD_qrAc8mZnarVpsudW9rPnPK0xj2BBe_g"/>
+</div>
+</header>
+<!-- TopNavBar (Web) -->
+<header class="hidden md:flex justify-between items-center w-full px-10 py-4 h-20 bg-surface-bright/80 backdrop-blur-md border-b border-surface-container z-10 shadow-[0_20px_50px_rgba(168,240,176,0.08)] tonal layering with soft 1px borders">
+<div class="flex-1"></div>
+<div class="flex items-center space-x-4 text-primary font-body-md text-body-md font-medium tracking-tight">
+<button class="hover:bg-surface-container p-2 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:bg-surface-container p-2 rounded-full transition-all duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User profile avatar" class="h-10 w-10 rounded-full border-2 border-primary-container" data-alt="Close up portrait of a smiling young man in a light blue shirt against a blurred background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVPiHyvRjTWNVNiRt7koPBY6JOUvWpWkTkkutsqaKYXTjXR7Av66Y1YVEUAP1gufvlazGPth6O71hJLP95qqY2voiHq1WvQK5UUvuDOFrQiXqtlJbuTbs5b_97GpU7fiu2MWvKNwybNP3NsahKne2FLU9uQpluFQIVHFNrfUgc5gmFOy_DJmIYc_iTIr0tb2105LJtwvK0mD2q-T7wRRxW72q6krtfe2EdyzUDP6KB2UhiSAkY9HRXMN18mImwQsaHfNZc77wE9LU"/>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto p-container-padding">
+<div class="max-w-4xl mx-auto space-y-md">
+<!-- Page Header -->
+<div class="mb-lg">
+<h2 class="font-headline-xl text-headline-xl text-on-background">Data Upload</h2>
+<p class="font-body-md text-body-md text-outline mt-2">Import your marketing datasets for AI analysis.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Upload Area (Takes up 2 columns on large screens) -->
+<div class="lg:col-span-2">
+<div class="bg-surface-container-lowest rounded-[24px] p-md h-full flex flex-col relative overflow-hidden">
+<!-- Subtle Background Gradient -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container opacity-20 rounded-full blur-[60px] -mr-32 -mt-32 pointer-events-none"></div>
+<div class="flex-1 flex flex-col items-center justify-center p-xl border-2 border-dashed border-outline-variant rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors duration-300 cursor-pointer group">
+<div class="h-20 w-20 rounded-full bg-primary-container/30 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">cloud_upload</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-background mb-2 text-center">Drag &amp; Drop files here</h3>
+<p class="font-body-md text-body-md text-outline text-center mb-6 max-w-sm">Supported formats: CSV, Excel, JSON. Maximum file size: 50MB.</p>
+<button class="px-6 py-3 bg-on-background text-surface-container-lowest rounded-full font-body-md text-body-md font-medium hover:bg-inverse-surface transition-colors">
+                                    Browse Files
+                                </button>
+</div>
+</div>
+</div>
+<!-- Side Panel: Stats / Tips -->
+<div class="lg:col-span-1 space-y-gutter">
+<!-- Storage Status -->
+<div class="bg-on-background rounded-[24px] p-md text-surface-container-lowest relative overflow-hidden">
+<!-- Subtle gradient for dark card -->
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-primary/20 to-transparent pointer-events-none"></div>
+<h3 class="font-body-md text-body-md font-semibold text-outline-variant mb-4">Storage Usage</h3>
+<div class="flex items-end space-x-2 mb-2">
+<span class="font-data-display text-data-display text-primary-container">4.2</span>
+<span class="font-body-md text-body-md text-outline-variant pb-1">GB / 10 GB</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full h-3 bg-surface-variant/20 rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 42%;"></div>
+</div>
+</div>
+<!-- Info Card -->
+<div class="bg-surface-container-low rounded-[24px] p-md border border-surface-container">
+<div class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-secondary mt-1">lightbulb</span>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-background mb-1">Formatting Tip</h4>
+<p class="font-label-sm text-label-sm text-outline">Ensure your CSV files have a header row for accurate AI parsing.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recently Uploaded Files -->
+<div class="mt-xl">
+<h3 class="font-headline-lg text-headline-lg text-on-background mb-6">Recently Uploaded</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- File Card 1 - Uploading State -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md flex items-center space-x-4">
+<div class="h-12 w-12 rounded-xl bg-secondary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-secondary">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-body-md text-body-md font-semibold text-on-background truncate">Q3_Campaign_Data_v2.csv</h4>
+<span class="font-label-sm text-label-sm text-outline ml-2">45%</span>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline mb-2">
+<span>24 MB</span>
+<span>•</span>
+<span class="text-secondary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1 animate-spin">sync</span> Uploading</span>
+</div>
+<!-- Thin Progress -->
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 45%;"></div>
+</div>
+</div>
+<button class="p-2 text-outline hover:bg-surface-container hover:text-error rounded-full transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- File Card 2 - Completed State -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md flex items-center space-x-4">
+<div class="h-12 w-12 rounded-xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">table</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-body-md text-body-md font-semibold text-on-background truncate">Customer_Segments_2023.xlsx</h4>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline">
+<span>12 MB</span>
+<span>•</span>
+<span>Today, 10:42 AM</span>
+<span>•</span>
+<span class="text-primary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Processed</span>
+</div>
+</div>
+<button class="p-2 text-outline hover:bg-surface-container hover:text-on-background rounded-full transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- File Card 3 - Completed State -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md flex items-center space-x-4">
+<div class="h-12 w-12 rounded-xl bg-primary-container/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-body-md text-body-md font-semibold text-on-background truncate">Social_Media_Metrics_Oct.json</h4>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline">
+<span>5.4 MB</span>
+<span>•</span>
+<span>Yesterday, 4:15 PM</span>
+<span>•</span>
+<span class="text-primary flex items-center"><span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Processed</span>
+</div>
+</div>
+<button class="p-2 text-outline hover:bg-surface-container hover:text-on-background rounded-full transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- File Card 4 - Error State -->
+<div class="bg-surface-container-lowest rounded-[24px] p-md flex items-center space-x-4 border border-error-container">
+<div class="h-12 w-12 rounded-xl bg-error-container/30 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h4 class="font-body-md text-body-md font-semibold text-on-background truncate">Corrupted_Export_Data.csv</h4>
+</div>
+<div class="flex items-center space-x-2 text-label-sm font-label-sm text-outline">
+<span>1.2 MB</span>
+<span>•</span>
+<span class="text-error flex items-center">Format not supported</span>
+</div>
+</div>
+<button class="p-2 text-outline hover:bg-error-container hover:text-error rounded-full transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AdMind AI - AI Insights History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#055223",
+                        "primary-container": "#a8f0b0",
+                        "on-secondary-fixed": "#17065e",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#276b38",
+                        "secondary-container": "#afa7fd",
+                        "surface": "#f5fbf5",
+                        "on-primary-container": "#2b6f3c",
+                        "on-secondary-fixed-variant": "#433c8a",
+                        "on-secondary-container": "#403887",
+                        "surface-tint": "#276b38",
+                        "on-background": "#171d19",
+                        "primary-fixed-dim": "#90d799",
+                        "inverse-on-surface": "#ecf2ec",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container-highest": "#dee4de",
+                        "tertiary": "#5f5e5e",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#eff5ef",
+                        "background": "#f5fbf5",
+                        "inverse-primary": "#90d799",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2c322e",
+                        "secondary": "#5b54a4",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed-dim": "#c6bfff",
+                        "outline-variant": "#c0c9bd",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#e4dfff",
+                        "surface-container-high": "#e4eae4",
+                        "on-tertiary-container": "#636262",
+                        "on-secondary": "#ffffff",
+                        "surface-bright": "#f5fbf5",
+                        "primary-fixed": "#abf3b3",
+                        "on-surface-variant": "#404940",
+                        "on-primary-fixed": "#002109",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#e1dede",
+                        "surface-dim": "#d5dcd6",
+                        "surface-variant": "#dee4de",
+                        "surface-container": "#e9efe9",
+                        "outline": "#707a6f",
+                        "on-surface": "#171d19"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "container-padding": "40px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "xl": "48px",
+                        "sm": "12px",
+                        "lg": "32px"
+                    },
+                    "fontFamily": {
+                        "data-display": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-display": ["32px", { "lineHeight": "1", "letterSpacing": "-0.03em", "fontWeight": "500" }],
+                        "headline-lg": ["24px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-xl": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+<!-- TopNavBar (Mobile) -->
+<nav class="md:hidden flex justify-between items-center w-full px-10 py-4 h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md text-emerald-400 dark:text-emerald-300 font-inter text-sm font-medium tracking-tight docked full-width top-0 border-b border-zinc-100 dark:border-zinc-800 shadow-[0_20px_50px_rgba(168,240,176,0.08)] sticky z-50">
+<div class="text-2xl font-black text-zinc-900 dark:text-zinc-50">AdMind AI</div>
+<div class="flex gap-4">
+<button class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-full transition-all duration-200 p-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-500 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800 rounded-full transition-all duration-200 p-2">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="close up headshot of a smiling man in a business casual environment with soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpSbQS05qOUHd7YXBqhhYdzF_tDyXOPuOcEIFYPN87Q3AXwEYsM1qSVmpvJGtTq_oMqgByqkarQnzCxEqCv8Ejvaoovv_ztrRdGxkFZCGlt0MlHsYuhIXbaF4GRmab4TkJMxCQCKkbvvEBeKdEhdKcmIzlHqitMktlDKcuYtm6L1xVoJ7f42o9lnASBdojvs5VgAOnP66giWVrU-bT9F07rjJYvUQ0NiB_n43P8fpAdQZGHlE67L0VNxYIjCBu-MdfOja4y5bOIek"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex h-screen w-72 flex-col border-r border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-emerald-400 dark:text-emerald-300 font-inter text-[13px] font-semibold flex flex-col h-full py-8 px-6 space-y-6 sticky top-0 shrink-0 z-40">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">insights</span>
+</div>
+<div>
+<h1 class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-purple-400">AdMind AI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-80">Marketing Intelligence</p>
+</div>
+</div>
+<div class="flex-grow space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-[24px] text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-[24px] text-emerald-700 dark:text-emerald-300 border-r-4 border-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/10 hover:translate-x-1 duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span>AI Insights</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-[24px] text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">forum</span>
+<span>Chat Analyst</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-[24px] text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">upload</span>
+<span>Data Upload</span>
+</a>
+</div>
+<div class="mt-auto pt-6 border-t border-surface-variant space-y-1">
+<button class="w-full py-3 px-4 bg-primary-container text-on-primary-container font-semibold rounded-[24px] hover:bg-primary-fixed-dim transition-colors shadow-[0_4px_14px_0_rgba(168,240,176,0.39)] mb-4 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">stars</span> Upgrade Pro
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 rounded-[24px] text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-[24px] text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all hover:translate-x-1 duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow p-container-padding flex flex-col gap-xl max-w-[1400px] mx-auto w-full">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-md">
+<div>
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-widest mb-2 font-semibold">History &amp; Analysis</p>
+<h2 class="font-headline-xl text-headline-xl text-on-background mb-4">AI Insights</h2>
+<p class="text-on-surface-variant max-w-2xl">Review historical automated reports and detected anomalies across your marketing campaigns. Filter by severity or date to pinpoint critical trends.</p>
+</div>
+<div class="flex gap-sm w-full md:w-auto">
+<div class="relative flex-grow md:flex-grow-0">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full md:w-64 pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-full focus:ring-2 focus:ring-primary-container transition-all font-body-md text-on-surface" placeholder="Search insights..." type="text"/>
+</div>
+<button class="flex items-center justify-center gap-2 px-6 py-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-full transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined">filter_list</span>
+<span class="hidden sm:inline">Filter</span>
+</button>
+</div>
+</header>
+<!-- Insights Feed -->
+<div class="flex flex-col gap-gutter">
+<!-- Date Divider -->
+<div class="flex items-center gap-4 py-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface opacity-80 whitespace-nowrap">Today</h3>
+<div class="h-[1px] w-full bg-surface-variant flex-grow"></div>
+</div>
+<!-- Insight Card 1 (HIGH) -->
+<article class="bg-surface-container-lowest rounded-3xl p-md flex flex-col md:flex-row gap-lg group hover:bg-surface-bright transition-colors">
+<div class="flex flex-col items-start gap-4 md:w-1/4 shrink-0">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+                        HIGH SEVERITY
+                    </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                        10:45 AM
+                    </div>
+</div>
+<div class="flex flex-col gap-4 flex-grow border-l-0 md:border-l-[3px] border-error-container md:pl-lg">
+<h4 class="font-headline-lg text-headline-lg text-on-background">Anomalous Spend Spike Detected in 'Q4 Retargeting'</h4>
+<p class="text-on-surface-variant">Daily budget consumption accelerated by 340% in the last 4 hours without a corresponding increase in conversion events. Recommend immediate review of bidding strategy.</p>
+<div class="flex flex-wrap gap-sm mt-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Campaign: Q4 Retargeting</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Metric: Spend Velocity</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Platform: Meta Ads</span>
+</div>
+</div>
+<div class="md:w-auto shrink-0 flex items-center justify-start md:justify-end">
+<button class="w-full md:w-auto px-6 py-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-full transition-colors flex items-center justify-center gap-2 font-medium">
+                        View Details
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Insight Card 2 (MEDIUM) -->
+<article class="bg-surface-container-lowest rounded-3xl p-md flex flex-col md:flex-row gap-lg group hover:bg-surface-bright transition-colors">
+<div class="flex flex-col items-start gap-4 md:w-1/4 shrink-0">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+                        MEDIUM PRIORITY
+                    </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                        08:15 AM
+                    </div>
+</div>
+<div class="flex flex-col gap-4 flex-grow border-l-0 md:border-l-[3px] border-secondary-container md:pl-lg">
+<h4 class="font-headline-lg text-headline-lg text-on-background">Declining CTR Trend on Top Performing Creative</h4>
+<p class="text-on-surface-variant">The creative asset "Hero_Video_V2" has shown a consistent 15% WoW decline in Click-Through Rate. Audience fatigue is likely setting in. Consider refreshing creatives.</p>
+<div class="flex flex-wrap gap-sm mt-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Asset: Hero_Video_V2</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Metric: CTR</span>
+</div>
+</div>
+<div class="md:w-auto shrink-0 flex items-center justify-start md:justify-end">
+<button class="w-full md:w-auto px-6 py-3 bg-surface-container-high hover:bg-surface-container-highest text-on-surface rounded-full transition-colors flex items-center justify-center gap-2 font-medium">
+                        View Details
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Date Divider -->
+<div class="flex items-center gap-4 py-2 mt-lg">
+<h3 class="font-headline-lg text-headline-lg text-on-surface opacity-80 whitespace-nowrap">Yesterday</h3>
+<div class="h-[1px] w-full bg-surface-variant flex-grow"></div>
+</div>
+<!-- Insight Card 3 (LOW) -->
+<article class="bg-surface-container-lowest rounded-3xl p-md flex flex-col md:flex-row gap-lg group hover:bg-surface-bright transition-colors opacity-90">
+<div class="flex flex-col items-start gap-4 md:w-1/4 shrink-0">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+                        ROUTINE UPDATE
+                    </div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                        06:00 PM
+                    </div>
+</div>
+<div class="flex flex-col gap-4 flex-grow border-l-0 md:border-l-[3px] border-surface-container-highest md:pl-lg">
+<h4 class="font-headline-lg text-headline-lg text-on-background">Daily Performance Summary Generated</h4>
+<p class="text-on-surface-variant">All primary KPIs are within expected variance thresholds. Total ROAS stabilized at 2.4x across all active channels.</p>
+<div class="flex flex-wrap gap-sm mt-2">
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Type: Automated Report</span>
+<span class="px-3 py-1 bg-surface-container-low text-on-surface rounded-md font-label-sm text-label-sm">Scope: Global</span>
+</div>
+</div>
+<div class="md:w-auto shrink-0 flex items-center justify-start md:justify-end">
+<button class="w-full md:w-auto px-6 py-3 bg-surface-container-low hover:bg-surface-container-high text-on-surface rounded-full transition-colors flex items-center justify-center gap-2 font-medium">
+                        Read Report
+                    </button>
+</div>
+</article>
+<!-- Load More -->
+<div class="flex justify-center mt-xl mb-xl">
+<button class="px-8 py-3 rounded-full border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    Load Older Insights
+                </button>
+</div>
+</div>
+</main>
+</body></html>
