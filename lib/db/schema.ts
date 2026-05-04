@@ -89,6 +89,8 @@ export const insights = pgTable("insights", {
   generatedAt: timestamp("generated_at").notNull().$defaultFn(() => new Date()),
   trigger: text("trigger").notNull(),          // 'manual' | 'scheduled'
   status: text("status").notNull(),            // 'pending' | 'running' | 'completed' | 'failed'
+  step: integer("step").notNull().default(0),  // 0-10 agent iteration counter for progress
+  stepLabel: text("step_label"),               // human-readable current step description
   dateRangeStart: text("date_range_start").notNull(),
   dateRangeEnd: text("date_range_end").notNull(),
   summary: text("summary"),

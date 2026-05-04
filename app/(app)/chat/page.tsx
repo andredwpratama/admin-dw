@@ -6,7 +6,7 @@ import { MessageBubble } from "@/components/chat/MessageBubble";
 import { ChatInput } from "@/components/chat/ChatInput";
 import { SuggestedQuestions } from "@/components/chat/SuggestedQuestions";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sparkles, Loader2, Eraser, Zap, Settings2 } from "lucide-react";
+import { Sparkles, Eraser, Zap, Settings2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -33,7 +33,8 @@ export default function ChatPage() {
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
+  const [thinkingLabel, setThinkingLabel] = useState<string | null>(null);
+  const [streamingMsgId, setStreamingMsgId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const fetchSessions = useCallback(async () => {
@@ -58,69 +59,108 @@ export default function ChatPage() {
     }
   }, []);
 
-  useEffect(() => {
-    // Wrap in void to indicate intent and avoid synchronous call linter warning if any
-    void fetchSessions();
-  }, [fetchSessions]);
+  useEffect(() => { void fetchSessions(); }, [fetchSessions]);
 
   useEffect(() => {
-    if (activeSessionId) {
-      void fetchMessages(activeSessionId);
-    } else {
-      setMessages([]);
-    }
+    if (activeSessionId) void fetchMessages(activeSessionId);
+    else setMessages([]);
   }, [activeSessionId, fetchMessages]);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [messages]);
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages, thinkingLabel]);
 
   const handleSend = async (content: string) => {
-    const userMsg = { id: Date.now().toString(), role: "user" as const, content };
-    setMessages(prev => [...prev, userMsg]);
+    const userMsgId = `user-${Date.now()}`;
+    const aiMsgId = `ai-${Date.now()}`;
+
+    setMessages(prev => [...prev, { id: userMsgId, role: "user", content }]);
     setIsLoading(true);
-    setIsTyping(true);
+    setThinkingLabel("Thinking...");
+    setStreamingMsgId(null);
+
+    let hasAddedAiMsg = false;
 
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        body: JSON.stringify({
-          sessionId: activeSessionId,
-          message: content,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: activeSessionId, message: content }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok || !res.body) throw new Error("Request failed");
 
-      if (!activeSessionId) {
-        setActiveSessionId(data.sessionId);
-        fetchSessions();
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split("\n\n");
+        buffer = parts.pop() ?? "";
+
+        for (const part of parts) {
+          const line = part.trim();
+          if (!line.startsWith("data: ")) continue;
+
+          let event: any;
+          try { event = JSON.parse(line.slice(6)); } catch { continue; }
+
+          switch (event.type) {
+            case "session":
+              if (!activeSessionId) {
+                setActiveSessionId(event.sessionId);
+                void fetchSessions();
+              }
+              break;
+
+            case "thinking":
+              setThinkingLabel(event.label);
+              break;
+
+            case "chunk":
+              setThinkingLabel(null);
+              if (!hasAddedAiMsg) {
+                hasAddedAiMsg = true;
+                setStreamingMsgId(aiMsgId);
+                setMessages(prev => [...prev, { id: aiMsgId, role: "assistant", content: event.content }]);
+              } else {
+                setMessages(prev =>
+                  prev.map(m => m.id === aiMsgId ? { ...m, content: m.content + event.content } : m)
+                );
+              }
+              break;
+
+            case "done":
+              setStreamingMsgId(null);
+              break;
+
+            case "error":
+              toast.error(event.error ?? "An error occurred");
+              break;
+          }
+        }
       }
-
-      setMessages(prev => [...prev, data.message]);
     } catch (err: any) {
       toast.error(err.message);
     } finally {
       setIsLoading(false);
-      setIsTyping(false);
+      setThinkingLabel(null);
+      setStreamingMsgId(null);
     }
   };
 
   const handleClearContext = async () => {
     if (!activeSessionId || !confirm("Clear all context memory for this session?")) return;
-    
     setIsLoading(true);
     try {
       const res = await fetch(`/api/chat/sessions/${activeSessionId}/clear`, { method: "POST" });
       if (!res.ok) throw new Error("Failed to clear context");
       setMessages([]);
-      fetchSessions();
+      void fetchSessions();
       toast.success("Context memory cleared");
     } catch (err: any) {
       toast.error(err.message);
@@ -131,16 +171,14 @@ export default function ChatPage() {
 
   const handleCompressContext = async () => {
     if (!activeSessionId) return;
-    
     setIsLoading(true);
     const toastId = toast.loading("Compressing conversation context...");
     try {
       const res = await fetch(`/api/chat/sessions/${activeSessionId}/compress`, { method: "POST" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to compress context");
-      
       await fetchMessages(activeSessionId);
-      fetchSessions();
+      void fetchSessions();
       toast.success("Context compressed into summary memory", { id: toastId });
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
@@ -151,15 +189,15 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-[calc(100vh-8rem)] rounded-[2.5rem] overflow-hidden border bg-card/30 backdrop-blur-sm shadow-xl">
-      <SessionList 
-        sessions={sessions} 
-        selectedId={activeSessionId} 
-        onSelect={setActiveSessionId} 
+      <SessionList
+        sessions={sessions}
+        selectedId={activeSessionId}
+        onSelect={setActiveSessionId}
         onRefresh={fetchSessions}
       />
-      
+
       <main className="flex-1 flex flex-col bg-background/50 relative">
-        {/* Chat Header */}
+        {/* Header */}
         <div className="h-14 border-b px-6 flex items-center justify-between bg-background/80 backdrop-blur-sm z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
@@ -169,40 +207,38 @@ export default function ChatPage() {
           </div>
 
           {activeSessionId && (
-            <div className="flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 rounded-full gap-2 text-muted-foreground hover:text-foreground">
-                    <Settings2 size={14} />
-                    <span className="text-[10px] font-bold uppercase">Memory Tools</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 rounded-2xl">
-                  <DropdownMenuItem onClick={handleCompressContext} className="gap-2 cursor-pointer">
-                    <Zap size={14} className="text-orange-500" />
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold">Compress Context</span>
-                      <span className="text-[9px] text-muted-foreground">Summarize history to save tokens</span>
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleClearContext} className="gap-2 cursor-pointer text-destructive focus:text-destructive">
-                    <Eraser size={14} />
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold">Clear Memory</span>
-                      <span className="text-[9px] text-muted-foreground">Reset all session history</span>
-                    </div>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 rounded-full gap-2 text-muted-foreground hover:text-foreground">
+                  <Settings2 size={14} />
+                  <span className="text-[10px] font-bold uppercase">Memory Tools</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 rounded-2xl">
+                <DropdownMenuItem onClick={handleCompressContext} className="gap-2 cursor-pointer">
+                  <Zap size={14} className="text-orange-500" />
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold">Compress Context</span>
+                    <span className="text-[9px] text-muted-foreground">Summarize history to save tokens</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleClearContext} className="gap-2 cursor-pointer text-destructive focus:text-destructive">
+                  <Eraser size={14} />
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold">Clear Memory</span>
+                    <span className="text-[9px] text-muted-foreground">Reset all session history</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
 
-        {/* Messages Area */}
+        {/* Messages */}
         <div className="flex-1 overflow-hidden relative">
           <ScrollArea className="h-full" viewportRef={scrollRef}>
             <div className="p-6 md:p-10 max-w-4xl mx-auto space-y-2">
-              {(messages?.length === 0) && !isLoading && (
+              {messages.length === 0 && !isLoading && (
                 <div className="py-20 flex flex-col items-center text-center space-y-12">
                   <div className="space-y-4">
                     <div className="w-20 h-20 rounded-[2.5rem] bg-gradient-to-br from-primary to-secondary p-0.5 shadow-2xl shadow-primary/20">
@@ -217,31 +253,39 @@ export default function ChatPage() {
                       </p>
                     </div>
                   </div>
-                  
                   <SuggestedQuestions onSelect={handleSend} />
                 </div>
               )}
-              
-              {messages?.filter(m => m.role !== "system").map((m) => (
-                <MessageBubble 
-                  key={m.id} 
-                  role={m.role as "user" | "assistant"} 
-                  content={m.content} 
+
+              {messages.filter(m => m.role !== "system").map(m => (
+                <MessageBubble
+                  key={m.id}
+                  role={m.role as "user" | "assistant"}
+                  content={m.content}
+                  isTyping={m.id === streamingMsgId}
                 />
               ))}
 
-              {isTyping && (
-                <MessageBubble 
-                  role="assistant" 
-                  content="..." 
-                  isTyping={true}
-                />
+              {/* Thinking indicator */}
+              {thinkingLabel && (
+                <div className="flex gap-4 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-1">
+                    <Sparkles size={18} />
+                  </div>
+                  <div className="px-5 py-3 rounded-[1.5rem] rounded-tl-none bg-card border text-sm text-muted-foreground flex items-center gap-3 shadow-sm">
+                    <span>{thinkingLabel}</span>
+                    <span className="flex gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "0ms" }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "150ms" }} />
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    </span>
+                  </div>
+                </div>
               )}
             </div>
           </ScrollArea>
         </div>
 
-        {/* Input Area */}
         <ChatInput onSend={handleSend} disabled={isLoading} />
       </main>
     </div>

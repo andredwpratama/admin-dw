@@ -3,8 +3,23 @@ import { adTools, executeTool } from "./tools";
 import { InsightResult } from "@/lib/types";
 import { updateInsight } from "@/lib/db/queries/insights";
 
+const MAX_ITERATIONS = 10;
+
+const STEP_LABELS: Record<number, string> = {
+  1: "Querying campaign overview...",
+  2: "Analyzing campaign data...",
+  3: "Detecting anomalies...",
+  4: "Investigating top spenders...",
+  5: "Comparing platform performance...",
+  6: "Identifying trends...",
+  7: "Evaluating spend efficiency...",
+  8: "Cross-referencing metrics...",
+  9: "Generating recommendations...",
+  10: "Finalizing analysis...",
+};
+
 const INSIGHT_SYSTEM_PROMPT = `
-You are an expert digital marketing analyst. You have access to tools to query 
+You are an expert digital marketing analyst. You have access to tools to query
 campaign performance data. Your job is to:
 
 1. Use the tools to explore the data thoroughly before drawing conclusions
@@ -51,18 +66,26 @@ export async function runInsightAgent(
     { role: "system", content: INSIGHT_SYSTEM_PROMPT },
     {
       role: "user",
-      content: `Analyze campaign performance from ${dateStart} to ${dateEnd}. 
-                Start by getting a summary overview, then investigate campaigns 
+      content: `Analyze campaign performance from ${dateStart} to ${dateEnd}.
+                Start by getting a summary overview, then investigate campaigns
                 that need attention. Use the tools available.`
     }
   ];
 
   try {
-    // Update status to running
-    await updateInsight(insightId, { status: "running" });
+    await updateInsight(insightId, {
+      status: "running",
+      step: 0,
+      stepLabel: "Starting agent...",
+    });
 
-    // Agentic loop — max 10 iterations
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < MAX_ITERATIONS; i++) {
+      const step = i + 1;
+      await updateInsight(insightId, {
+        step,
+        stepLabel: STEP_LABELS[step] ?? "Processing...",
+      });
+
       const response = await openrouter.chat.completions.create({
         model: MODEL,
         messages,
@@ -73,23 +96,22 @@ export async function runInsightAgent(
       const choice = response.choices[0];
       const message = choice.message;
 
-      // Push assistant message to history
       messages.push(message);
 
-      // Model finished and provided final content
       if (choice.finish_reason === "stop" && message.content) {
         let content = message.content;
-        // Clean markdown if model wrapped JSON in ```json
         if (content.includes("```json")) {
           content = content.split("```json")[1].split("```")[0].trim();
         } else if (content.includes("```")) {
           content = content.split("```")[1].split("```")[0].trim();
         }
-        
+
         const result = JSON.parse(content) as InsightResult;
-        
+
         await updateInsight(insightId, {
           status: "completed",
+          step: MAX_ITERATIONS,
+          stepLabel: "Done",
           summary: result.summary,
           findings: JSON.stringify(result.findings),
           recommendations: JSON.stringify(result.recommendations),
@@ -99,7 +121,6 @@ export async function runInsightAgent(
         return result;
       }
 
-      // Process tool calls
       if (message.tool_calls) {
         for (const toolCall of message.tool_calls) {
           if (toolCall.type === "function") {

@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { after } from "next/server";
 import { createInsight } from "@/lib/db/queries/insights";
 import { runInsightAgent } from "@/lib/ai/insightAgent";
 import { format, subDays } from "date-fns";
+
+// Allow up to 5 minutes for the agent to complete on Vercel Pro
+export const maxDuration = 300;
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,16 +16,18 @@ export async function POST(req: NextRequest) {
     const insight = await createInsight({
       trigger: "manual",
       status: "pending",
+      step: 0,
       dateRangeStart: dateStart,
       dateRangeEnd: dateEnd,
       generatedAt: new Date(),
     });
 
-    // Run agent in background (fire and forget)
-    // In Next.js App Router, we should await or use a proper background job
-    // for now we'll fire it and return the ID for polling
-    runInsightAgent(dateStart, dateEnd, insight.id).catch(err => {
-      console.error("Background Insight Agent Failed:", err);
+    // after() keeps the serverless function alive until the agent completes
+    // even after the response has been sent to the client
+    after(async () => {
+      await runInsightAgent(dateStart, dateEnd, insight.id).catch((err) => {
+        console.error("Insight Agent Failed:", err);
+      });
     });
 
     return NextResponse.json({ insightId: insight.id });
