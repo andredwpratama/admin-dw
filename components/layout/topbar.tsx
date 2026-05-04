@@ -31,12 +31,15 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { SidebarContent } from "./sidebar";
-import { UserButton } from "@clerk/nextjs";
+import { useSession, signOut } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const emptySubscribe = () => () => {};
 
 export function Topbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = useSession();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const isClient = useSyncExternalStore(
@@ -45,6 +48,11 @@ export function Topbar() {
     () => false
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/sign-in");
+  };
 
   const getTitle = () => {
     const segment = pathname.split("/")[1];
@@ -177,15 +185,32 @@ export function Topbar() {
         </div>
 
         <div className="flex items-center gap-3 pl-2 border-l border-muted/50 ml-1">
-          <UserButton 
-            appearance={{
-              elements: {
-                avatarBox: "w-9 h-9 rounded-full ring-2 ring-primary/10 hover:ring-primary/30 transition-all"
-              }
-            }}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-9 h-9 rounded-full ring-2 ring-primary/10 hover:ring-primary/30 transition-all bg-primary/10 flex items-center justify-center shrink-0 outline-none">
+                <User size={16} className="text-primary" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52 rounded-2xl shadow-xl">
+              <DropdownMenuLabel className="text-[11px] text-muted-foreground font-normal">
+                {session?.user?.email ?? ""}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/settings")}>
+                  <Settings size={14} className="mr-2" />
+                  Settings
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive focus:text-destructive">
+                <LogOut size={14} className="mr-2" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <div className="flex flex-col items-start hidden sm:flex">
-            <span className="text-[11px] font-bold leading-none">dw User</span>
+            <span className="text-[11px] font-bold leading-none">{session?.user?.name ?? "dw User"}</span>
             <span className="text-[9px] text-muted-foreground uppercase tracking-tighter">Pro Plan</span>
           </div>
         </div>
