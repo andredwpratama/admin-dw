@@ -15,7 +15,7 @@ function DialogTrigger({
   asChild,
   children,
   ...props
-}: DialogPrimitive.Trigger.Props) {
+}: DialogPrimitive.Trigger.Props & { asChild?: boolean }) {
   if (asChild && React.isValidElement(children)) {
     return (
       <DialogPrimitive.Trigger
@@ -41,7 +41,7 @@ function DialogClose({
   asChild,
   children,
   ...props
-}: DialogPrimitive.Close.Props) {
+}: DialogPrimitive.Close.Props & { asChild?: boolean }) {
   if (asChild && React.isValidElement(children)) {
     return (
       <DialogPrimitive.Close

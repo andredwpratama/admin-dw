@@ -62,7 +62,7 @@ const faqs = [
   },
   {
     q: "Is my data secure?",
-    a: "Absolutely. We use a local SQLite database and your marketing data is never used to train global AI models. All API calls are secured via HTTPS."
+    a: "Absolutely. We use a secure Neon (PostgreSQL) database and your marketing data is never used to train global AI models. All API calls are secured via HTTPS."
   }
 ];
 

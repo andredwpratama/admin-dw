@@ -18,7 +18,7 @@ function DropdownMenuTrigger({
   asChild,
   children,
   ...props
-}: MenuPrimitive.Trigger.Props) {
+}: MenuPrimitive.Trigger.Props & { asChild?: boolean }) {
   if (asChild && React.isValidElement(children)) {
     return (
       <MenuPrimitive.Trigger

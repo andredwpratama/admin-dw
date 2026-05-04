@@ -29,7 +29,7 @@ function AccordionTrigger({
   asChild,
   children,
   ...props
-}: AccordionPrimitive.Trigger.Props) {
+}: AccordionPrimitive.Trigger.Props & { asChild?: boolean }) {
   if (asChild && React.isValidElement(children)) {
     return (
       <AccordionPrimitive.Header className="flex">

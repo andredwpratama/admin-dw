@@ -178,7 +178,6 @@ export function Topbar() {
 
         <div className="flex items-center gap-3 pl-2 border-l border-muted/50 ml-1">
           <UserButton 
-            afterSignOutUrl="/"
             appearance={{
               elements: {
                 avatarBox: "w-9 h-9 rounded-full ring-2 ring-primary/10 hover:ring-primary/30 transition-all"

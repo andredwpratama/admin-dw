@@ -29,7 +29,7 @@ export async function getDatasetById(id: string) {
 
 export async function insertGenericDataBatch(rows: (typeof genericData.$inferInsert)[]) {
   if (rows.length === 0) return;
-  // Insert in chunks of 100 to avoid SQLite variable limits
+  // Insert in chunks of 100 to avoid large query sizes
   const chunkSize = 100;
   for (let i = 0; i < rows.length; i += chunkSize) {
     const chunk = rows.slice(i, i + chunkSize);

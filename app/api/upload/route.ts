@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       skipEmptyLines: true,
     });
 
-    const { rows, errors } = normalizeRows(platform, rawRows);
+    const { rows, errors } = normalizeRows(platform, rawRows as Record<string, unknown>[]);
 
     if (rows.length === 0 && errors.length > 0) {
       await updateUploadRecord(uploadId, {

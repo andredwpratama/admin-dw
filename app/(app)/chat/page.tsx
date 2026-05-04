@@ -222,10 +222,10 @@ export default function ChatPage() {
                 </div>
               )}
               
-              {messages?.map((m) => (
+              {messages?.filter(m => m.role !== "system").map((m) => (
                 <MessageBubble 
                   key={m.id} 
-                  role={m.role} 
+                  role={m.role as "user" | "assistant"} 
                   content={m.content} 
                 />
               ))}

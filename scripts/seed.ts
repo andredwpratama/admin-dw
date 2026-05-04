@@ -1,18 +1,24 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
-import { campaigns, metrics, insights, chatSessions, chatMessages, notifications, userSettings } from "../lib/db/schema";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { campaigns, metrics } from "../lib/db/schema";
 import { nanoid } from "nanoid";
 import { format, subDays } from "date-fns";
+import * as dotenv from "dotenv";
 
-const sqlite = new Database("admind.db");
-const db = drizzle(sqlite);
+dotenv.config();
+
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error("❌ Missing DATABASE_URL in environment variables.");
+  process.exit(1);
+}
 
 async function seed() {
-  console.log("🌱 Seeding campaign data...");
+  console.log("🌱 Seeding campaign data to Neon...");
+  const sql = neon(connectionString!);
+  const db = drizzle(sql);
 
-  const platforms = ["meta", "google", "linkedin"];
-  const campaignStatuses = ["active", "paused", "ended"];
-  
   const campaignData = [
     { name: "Summer Sale 2024", platform: "meta", status: "active" },
     { name: "Product Launch - X1", platform: "google", status: "active" },

@@ -102,13 +102,15 @@ export async function runInsightAgent(
       // Process tool calls
       if (message.tool_calls) {
         for (const toolCall of message.tool_calls) {
-          const args = JSON.parse(toolCall.function.arguments);
-          const result = await executeTool(toolCall.function.name, args);
-          messages.push({
-            role: "tool",
-            tool_call_id: toolCall.id,
-            content: JSON.stringify(result),
-          });
+          if (toolCall.type === "function") {
+            const args = JSON.parse(toolCall.function.arguments);
+            const result = await executeTool(toolCall.function.name, args);
+            messages.push({
+              role: "tool",
+              tool_call_id: toolCall.id,
+              content: JSON.stringify(result),
+            });
+          }
         }
       }
     }

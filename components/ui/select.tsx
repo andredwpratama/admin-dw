@@ -36,6 +36,7 @@ function SelectTrigger({
   ...props
 }: SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default"
+  asChild?: boolean
 }) {
   if (asChild && React.isValidElement(children)) {
     return (

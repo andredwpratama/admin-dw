@@ -1,13 +1,21 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
 import { notifications, userSettings } from "../lib/db/schema";
 import { nanoid } from "nanoid";
+import * as dotenv from "dotenv";
 
-const sqlite = new Database("admind.db");
-const db = drizzle(sqlite);
+dotenv.config();
+
+const connectionString = process.env.DATABASE_URL;
 
 async function seed() {
-  console.log("🌱 Seeding system data...");
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not set");
+  }
+
+  console.log("🌱 Seeding system data to Neon...");
+  const sql = neon(connectionString);
+  const db = drizzle(sql);
 
   // Seed Settings
   await db.insert(userSettings).values({

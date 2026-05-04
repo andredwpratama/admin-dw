@@ -1,26 +1,12 @@
 {
   "version": "7",
-  "dialect": "sqlite",
+  "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
-      "version": "6",
-      "when": 1777432479171,
-      "tag": "0000_fast_orphan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1777438776252,
-      "tag": "0001_conscious_black_tarantula",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1777448234103,
-      "tag": "0002_futuristic_night_thrasher",
+      "version": "7",
+      "when": 1777801730031,
+      "tag": "0000_amazing_mephisto",
       "breakpoints": true
     }
   ]

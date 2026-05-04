@@ -1,10 +1,13 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
-import * as schema from "./schema";
+import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-http';
+import * as schema from './schema';
 
-const sqlite = new Database(process.env.DATABASE_URL ?? "./admind.db");
+const connectionString = process.env.DATABASE_URL;
 
-// Enable WAL mode for better performance
-sqlite.pragma("journal_mode = WAL");
+if (!connectionString) {
+  throw new Error("Missing DATABASE_URL environment variable.");
+}
 
-export const db = drizzle(sqlite, { schema });
+// Neon's serverless HTTP driver is optimized for Vercel/Edge
+const sql = neon(connectionString);
+export const db = drizzle(sql, { schema });
